@@ -55,6 +55,31 @@
   z-index: 1;
 }
 
+/* Musical notes animation */
+.musical-notes {
+  position: absolute;
+  inset: -50px;
+  pointer-events: none;
+}
+
+.note {
+  position: absolute;
+  font-size: 2rem;
+  color: #ffd700;
+  opacity: 0;
+  animation: noteFloat 2s ease-in-out infinite;
+}
+
+.note-1 { top: 10%; left: 20%; animation-delay: 0s; }
+.note-2 { top: 20%; right: 15%; animation-delay: 0.5s; }
+.note-3 { bottom: 25%; left: 15%; animation-delay: 1s; }
+.note-4 { bottom: 15%; right: 20%; animation-delay: 1.5s; }
+
+@keyframes noteFloat {
+  0%, 100% { opacity: 0; transform: translateY(0px) scale(0.8); }
+  50% { opacity: 0.8; transform: translateY(-20px) scale(1.2); }
+}
+
 @keyframes pulse {
   0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
   100% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 215, 0, 0); }
@@ -167,6 +192,51 @@
 @keyframes spotlightGlow {
   0% { filter: blur(2px) brightness(1); }
   100% { filter: blur(1px) brightness(1.2); }
+}
+
+/* Magic sparkles around rat */
+.magic-sparkles {
+  position: absolute;
+  inset: -30px;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  font-size: 1.2rem;
+  opacity: 0;
+  animation: sparkleFloat 3s ease-in-out infinite;
+}
+
+.sparkle-0 { top: 10%; left: 20%; animation-delay: 0s; }
+.sparkle-1 { top: 30%; right: 15%; animation-delay: 0.5s; }
+.sparkle-2 { bottom: 40%; left: 10%; animation-delay: 1s; }
+.sparkle-3 { bottom: 20%; right: 25%; animation-delay: 1.5s; }
+.sparkle-4 { top: 50%; left: 5%; animation-delay: 2s; }
+.sparkle-5 { top: 70%; right: 10%; animation-delay: 2.5s; }
+
+/* Celebration sparkles for reveal stage */
+.magic-sparkles.celebration .sparkle {
+  animation: celebrationSparkle 2s ease-in-out infinite;
+}
+
+.sparkle-celebration-0 { top: 5%; left: 15%; animation-delay: 0s; }
+.sparkle-celebration-1 { top: 25%; right: 10%; animation-delay: 0.3s; }
+.sparkle-celebration-2 { bottom: 35%; left: 5%; animation-delay: 0.6s; }
+.sparkle-celebration-3 { bottom: 15%; right: 20%; animation-delay: 0.9s; }
+.sparkle-celebration-4 { top: 45%; left: 0%; animation-delay: 1.2s; }
+.sparkle-celebration-5 { top: 65%; right: 5%; animation-delay: 1.5s; }
+.sparkle-celebration-6 { bottom: 50%; left: 10%; animation-delay: 1.8s; }
+.sparkle-celebration-7 { top: 80%; right: 15%; animation-delay: 2.1s; }
+
+@keyframes sparkleFloat {
+  0%, 100% { opacity: 0; transform: translateY(0px) scale(0.5); }
+  50% { opacity: 1; transform: translateY(-15px) scale(1.2); }
+}
+
+@keyframes celebrationSparkle {
+  0%, 100% { opacity: 0; transform: translateY(0px) scale(0.8) rotate(0deg); }
+  50% { opacity: 1; transform: translateY(-10px) scale(1.5) rotate(180deg); }
 }
 
 /* Curtains */
@@ -366,7 +436,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 25;
-  animation: cardReveal 1.5s ease-out;
+  animation: cardReveal 2s ease-out;
   max-width: 90%;
   width: 600px;
 }
@@ -378,6 +448,8 @@
   border-radius: 20px;
   box-shadow: 0 20px 80px rgba(0,0,0,0.3);
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .rainbow-text {
@@ -401,6 +473,16 @@
   color: #333;
 }
 
+.message-line {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: messageReveal 1s ease-out forwards;
+}
+
+.message-line-1 { animation-delay: 0.5s; }
+.message-line-2 { animation-delay: 1s; }
+.message-line-3 { animation-delay: 1.5s; }
+
 .signature {
   font-style: italic;
   color: #666;
@@ -408,14 +490,51 @@
   margin-top: 10px;
 }
 
+/* Floating birthday elements */
+.floating-elements {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.floating-balloon, .floating-confetti {
+  position: absolute;
+  font-size: 2rem;
+  animation: floatUp 4s ease-in-out infinite;
+}
+
+.balloon-1 { left: 10%; bottom: -50px; animation-delay: 0s; color: #FF6B6B; }
+.balloon-2 { left: 80%; bottom: -50px; animation-delay: 1s; color: #4ECDC4; }
+.balloon-3 { left: 50%; bottom: -50px; animation-delay: 2s; color: #45B7D1; }
+
+.confetti-1 { right: 15%; top: -50px; animation-delay: 0.5s; }
+.confetti-2 { left: 20%; top: -50px; animation-delay: 1.5s; }
+.confetti-3 { right: 70%; top: -50px; animation-delay: 2.5s; }
+
+@keyframes messageReveal {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-400px) rotate(360deg); opacity: 0; }
+}
+
 @keyframes cardReveal {
   0% { 
     opacity: 0; 
-    transform: translate(-50%, -50%) scale(0.8); 
+    transform: translate(-50%, -50%) scale(0.3) rotateY(90deg); 
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1) rotateY(0deg);
   }
   100% { 
     opacity: 1; 
-    transform: translate(-50%, -50%) scale(1); 
+    transform: translate(-50%, -50%) scale(1) rotateY(0deg); 
   }
 }
 
