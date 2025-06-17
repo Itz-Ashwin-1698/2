@@ -41,8 +41,14 @@ function App() {
   }, [stage, countdown]);
 
   const handleContinue = () => {
+    setShowSecondSpeech(false);
+    setShowRibbonButton(false);
     setCurtainOpen(true);
-    setStage('reveal');
+    
+    // Wait for curtain animation to complete before showing birthday card
+    setTimeout(() => {
+      setStage('reveal');
+    }, 2000);
   };
 
   return (
@@ -114,7 +120,7 @@ function App() {
       )}
 
       {/* Curtains Stage - Lights on with curtains */}
-      {stage === 'curtains' && (
+      {(stage === 'curtains' || stage === 'reveal') && (
         <>
           {/* Stage background with lights on */}
           <div className="stage-background lights-on">
@@ -139,30 +145,29 @@ function App() {
             )}
           </div>
 
-          {/* Rat Character */}
-          {showRat && (
-            <div className="rat-container">
-              <img 
-                src="/24889b63-2a23-4c1d-bdeb-c6bc764031e5.png" 
-                alt="Cute rat character" 
-                className="rat-image"
-              />
+          {/* Rat Character - stays visible in both curtains and reveal stages */}
+          <div className={`rat-container ${stage === 'reveal' ? 'rat-moved-up' : ''}`}>
+            <img 
+              src="/24889b63-2a23-4c1d-bdeb-c6bc764031e5.png" 
+              alt="Cute rat character" 
+              className="rat-image"
+            />
 
-              {/* Second Speech bubble */}
-              {showSecondSpeech && (
-                <div className="speech-bubble">
-                  <div className="speech-content">
-                    <Sparkles className="speech-icon" />
-                    <p>oyee ....Isse open toh ker</p>
-                  </div>
-                  <div className="speech-tail"></div>
+            {/* Second Speech bubble - only in curtains stage */}
+            {stage === 'curtains' && showSecondSpeech && (
+              <div className="speech-bubble">
+                <div className="speech-content">
+                  <Sparkles className="speech-icon" />
+                  <p>Oyee ....Isse open toh ker</p>
+                  <p>Surprise dekhna hai na? 🎁</p>
                 </div>
-              )}
-            </div>
-          )}
+                <div className="speech-tail"></div>
+              </div>
+            )}
+          </div>
 
-          {/* Ribbon Button */}
-          {showRibbonButton && !curtainOpen && (
+          {/* Ribbon Button - only in curtains stage */}
+          {stage === 'curtains' && showRibbonButton && (
             <div className="ribbon-button-container">
               <button 
                 onClick={handleContinue}
@@ -172,50 +177,29 @@ function App() {
               </button>
             </div>
           )}
-        </>
-      )}
 
-      {/* Reveal Stage - Birthday Card */}
-      {stage === 'reveal' && (
-        <>
-          {/* Stage background with lights on */}
-          <div className="stage-background lights-on">
-            <div className="stage-floor"></div>
-            
-            {/* Curtains - opened */}
-            <div className="curtain-left curtain-open-left"></div>
-            <div className="curtain-right curtain-open-right"></div>
-          </div>
-
-          {/* Rat Character - moved up */}
-          <div className="rat-container rat-moved-up">
-            <img 
-              src="/24889b63-2a23-4c1d-bdeb-c6bc764031e5.png" 
-              alt="Cute rat character" 
-              className="rat-image"
-            />
-          </div>
-
-          {/* Birthday Card Reveal */}
-          <div className="birthday-card">
-            <div className="card-content">
-              <h1 className="rainbow-text">
-                🎊 HAPPY BIRTHDAY! 🎊
-              </h1>
-              <div className="birthday-message">
-                <p>
-                  <Heart className="inline mr-2 text-pink-400" />
-                  May your special day be filled with wonder, laughter, and all the magic life has to offer!
-                </p>
-                <p>
-                  Here's to another year of adventures, dreams coming true, and moments that make your heart sing! 
-                </p>
-                <p className="signature">
-                  🌟 With love and birthday wishes 🌟
-                </p>
+          {/* Birthday Card Reveal - only in reveal stage */}
+          {stage === 'reveal' && (
+            <div className="birthday-card">
+              <div className="card-content">
+                <h1 className="rainbow-text">
+                  🎊 HAPPY BIRTHDAY! 🎊
+                </h1>
+                <div className="birthday-message">
+                  <p>
+                    <Heart className="inline mr-2 text-pink-400" />
+                    May your special day be filled with wonder, laughter, and all the magic life has to offer!
+                  </p>
+                  <p>
+                    Here's to another year of adventures, dreams coming true, and moments that make your heart sing! 
+                  </p>
+                  <p className="signature">
+                    🌟 With love and birthday wishes 🌟
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </>
       )}
     </div>
