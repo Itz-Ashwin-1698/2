@@ -36,7 +36,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: pulse 1s ease-in-out infinite alternate;
+  animation: pulse 1s ease-in-out infinite alternate, tickTock 1s ease-in-out infinite;
 }
 
 .countdown-glow {
@@ -53,6 +53,19 @@
   color: #ffd700;
   text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
   z-index: 1;
+}
+
+.countdown-text {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  white-space: nowrap;
+  animation: textGlow 2s ease-in-out infinite alternate;
 }
 
 /* Musical notes animation */
@@ -85,9 +98,19 @@
   100% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 215, 0, 0); }
 }
 
+@keyframes tickTock {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
 @keyframes flicker {
   0% { opacity: 0.8; }
   100% { opacity: 1; }
+}
+
+@keyframes textGlow {
+  0% { text-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+  100% { text-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 35px rgba(255, 215, 0, 0.8); }
 }
 
 /* Spotlight Stage - Dark background */
@@ -237,6 +260,48 @@
 @keyframes celebrationSparkle {
   0%, 100% { opacity: 0; transform: translateY(0px) scale(0.8) rotate(0deg); }
   50% { opacity: 1; transform: translateY(-10px) scale(1.5) rotate(180deg); }
+}
+
+/* Gift Box */
+.gift-box {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  animation: giftDrop 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.gift-icon {
+  width: 80px;
+  height: 80px;
+  color: #FFD700;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+  animation: giftGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes giftDrop {
+  0% { 
+    top: -100px; 
+    transform: translateX(-50%) rotate(0deg); 
+  }
+  70% { 
+    top: 40%; 
+    transform: translateX(-50%) rotate(360deg); 
+  }
+  85% { 
+    top: 35%; 
+    transform: translateX(-50%) rotate(360deg) scale(1.1); 
+  }
+  100% { 
+    top: 38%; 
+    transform: translateX(-50%) rotate(360deg) scale(1); 
+  }
+}
+
+@keyframes giftGlow {
+  0% { filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)) brightness(1); }
+  100% { filter: drop-shadow(0 15px 30px rgba(255,215,0,0.4)) brightness(1.2); }
 }
 
 /* Curtains */
@@ -549,6 +614,11 @@
     font-size: 2rem;
   }
   
+  .countdown-text {
+    font-size: 1.2rem;
+    bottom: -50px;
+  }
+  
   .spotlight {
     border-left-width: 150px;
     border-right-width: 150px;
@@ -585,6 +655,11 @@
   .birthday-message {
     font-size: 1rem;
   }
+  
+  .gift-icon {
+    width: 60px;
+    height: 60px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -595,6 +670,11 @@
   
   .countdown-number {
     font-size: 1.5rem;
+  }
+  
+  .countdown-text {
+    font-size: 1rem;
+    bottom: -40px;
   }
   
   .spotlight {
@@ -629,5 +709,10 @@
   .birthday-message {
     font-size: 0.9rem;
     gap: 15px;
+  }
+  
+  .gift-icon {
+    width: 50px;
+    height: 50px;
   }
 }

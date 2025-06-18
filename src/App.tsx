@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Heart, Sparkles } from 'lucide-react';
+import { Heart, Sparkles, Gift } from 'lucide-react';
 
 function App() {
-  const [stage, setStage] = useState<'countdown' | 'spotlight' | 'curtains' | 'reveal'>('countdown');
+  const [stage, setStage] = useState<'countdown' | 'spotlight' | 'curtains' | 'giftDrop' | 'reveal'>('countdown');
   const [countdown, setCountdown] = useState(5);
   const [showRat, setShowRat] = useState(false);
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
@@ -10,21 +10,25 @@ function App() {
   const [showSecondSpeech, setShowSecondSpeech] = useState(false);
   const [showRibbonButton, setShowRibbonButton] = useState(false);
   const [curtainOpen, setCurtainOpen] = useState(false);
+  const [showGiftBox, setShowGiftBox] = useState(false);
+  const [showGiftSpeech, setShowGiftSpeech] = useState(false);
   const [showBirthdayCard, setShowBirthdayCard] = useState(false);
 
   // Audio refs
   const countdownAudioRef = useRef<HTMLAudioElement | null>(null);
   const ratEntranceAudioRef = useRef<HTMLAudioElement | null>(null);
   const curtainOpenAudioRef = useRef<HTMLAudioElement | null>(null);
+  const giftDropAudioRef = useRef<HTMLAudioElement | null>(null);
   const birthdayMusicRef = useRef<HTMLAudioElement | null>(null);
 
   // Initialize audio
   useEffect(() => {
-    // Create audio elements
-    countdownAudioRef.current = new Audio('https://www.soundjay.com/misc/sounds/clock-ticking-3.wav');
-    ratEntranceAudioRef.current = new Audio('https://www.soundjay.com/misc/sounds/magic-chime-02.wav');
-    curtainOpenAudioRef.current = new Audio('https://www.soundjay.com/misc/sounds/ta-da.wav');
-    birthdayMusicRef.current = new Audio('https://www.soundjay.com/misc/sounds/happy-birthday-song.wav');
+    // Create audio elements with fallback sounds
+    countdownAudioRef.current = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+    ratEntranceAudioRef.current = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+    curtainOpenAudioRef.current = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+    giftDropAudioRef.current = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+    birthdayMusicRef.current = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
 
     // Set audio properties
     if (countdownAudioRef.current) {
@@ -37,6 +41,9 @@ function App() {
     if (curtainOpenAudioRef.current) {
       curtainOpenAudioRef.current.volume = 0.8;
     }
+    if (giftDropAudioRef.current) {
+      giftDropAudioRef.current.volume = 0.7;
+    }
     if (birthdayMusicRef.current) {
       birthdayMusicRef.current.volume = 0.5;
       birthdayMusicRef.current.loop = true;
@@ -44,7 +51,7 @@ function App() {
 
     return () => {
       // Cleanup audio
-      [countdownAudioRef, ratEntranceAudioRef, curtainOpenAudioRef, birthdayMusicRef].forEach(ref => {
+      [countdownAudioRef, ratEntranceAudioRef, curtainOpenAudioRef, giftDropAudioRef, birthdayMusicRef].forEach(ref => {
         if (ref.current) {
           ref.current.pause();
           ref.current = null;
@@ -59,7 +66,6 @@ function App() {
       // Play countdown music
       if (countdown === 5 && countdownAudioRef.current) {
         countdownAudioRef.current.play().catch(() => {
-          // Fallback if audio doesn't play
           console.log('Audio autoplay blocked');
         });
       }
@@ -89,7 +95,7 @@ function App() {
         }, 1000);
         // First speech bubble appears after rat
         setTimeout(() => setShowSpeechBubble(true), 2500);
-        // Auto-transition to curtains stage after 5 seconds
+        // Auto-transition to curtains stage after 8 seconds (increased from 6)
         setTimeout(() => {
           setStage('curtains');
           setShowSpeechBubble(false);
@@ -98,7 +104,7 @@ function App() {
           setTimeout(() => setShowSecondSpeech(true), 1000);
           // Ribbon button appears
           setTimeout(() => setShowRibbonButton(true), 2000);
-        }, 6000);
+        }, 8000);
       }, 500);
     }
   }, [stage, countdown]);
@@ -115,25 +121,44 @@ function App() {
       });
     }
     
-    // Wait for curtain animation to complete before showing birthday card
+    // Wait for curtain animation to complete before showing gift drop
     setTimeout(() => {
-      setStage('reveal');
-      // Show birthday card with delay for dramatic effect
+      setStage('giftDrop');
+      // Show gift box dropping
       setTimeout(() => {
-        setShowBirthdayCard(true);
-        // Play birthday music
-        if (birthdayMusicRef.current) {
-          birthdayMusicRef.current.play().catch(() => {
+        setShowGiftBox(true);
+        // Play gift drop sound
+        if (giftDropAudioRef.current) {
+          giftDropAudioRef.current.play().catch(() => {
             console.log('Audio play failed');
           });
         }
+        // Show rat's gift speech after gift lands
+        setTimeout(() => {
+          setShowGiftSpeech(true);
+          // Auto-transition to final reveal after 5 seconds
+          setTimeout(() => {
+            setStage('reveal');
+            setShowGiftSpeech(false);
+            // Show birthday card with delay for dramatic effect
+            setTimeout(() => {
+              setShowBirthdayCard(true);
+              // Play birthday music
+              if (birthdayMusicRef.current) {
+                birthdayMusicRef.current.play().catch(() => {
+                  console.log('Audio play failed');
+                });
+              }
+            }, 500);
+          }, 5000);
+        }, 1500);
       }, 500);
     }, 2000);
   };
 
   // Enable audio on first user interaction
   const enableAudio = () => {
-    [countdownAudioRef, ratEntranceAudioRef, curtainOpenAudioRef, birthdayMusicRef].forEach(ref => {
+    [countdownAudioRef, ratEntranceAudioRef, curtainOpenAudioRef, giftDropAudioRef, birthdayMusicRef].forEach(ref => {
       if (ref.current) {
         ref.current.load();
       }
@@ -163,6 +188,10 @@ function App() {
               <div className="note note-2">♫</div>
               <div className="note note-3">♪</div>
               <div className="note note-4">♫</div>
+            </div>
+            {/* Bottom text */}
+            <div className="countdown-text">
+              Abb aayega Majaa..!!!
             </div>
           </div>
         </div>
@@ -223,7 +252,7 @@ function App() {
       )}
 
       {/* Curtains Stage - Lights on with curtains */}
-      {(stage === 'curtains' || stage === 'reveal') && (
+      {(stage === 'curtains' || stage === 'giftDrop' || stage === 'reveal') && (
         <>
           {/* Stage background with lights on */}
           <div className="stage-background lights-on">
@@ -248,7 +277,14 @@ function App() {
             )}
           </div>
 
-          {/* Rat Character - stays visible in both curtains and reveal stages */}
+          {/* Gift Box - only in giftDrop and reveal stages */}
+          {(stage === 'giftDrop' || stage === 'reveal') && showGiftBox && (
+            <div className="gift-box">
+              <Gift className="gift-icon" />
+            </div>
+          )}
+
+          {/* Rat Character - stays visible in all stages */}
           <div className={`rat-container ${stage === 'reveal' ? 'rat-moved-up' : ''}`}>
             <img 
               src="/24889b63-2a23-4c1d-bdeb-c6bc764031e5.png" 
@@ -270,8 +306,20 @@ function App() {
               <div className="speech-bubble">
                 <div className="speech-content">
                   <Sparkles className="speech-icon" />
-                  <p>Oyee ....Isse open toh ker</p>
-                  <p>Surprise dekhna hai na? 🎁</p>
+                  <p>Oyee "Isse Open to Ker ...</p>
+                  <p>Itna Attitude Dikha rhi Tu....!!!!!</p>
+                </div>
+                <div className="speech-tail"></div>
+              </div>
+            )}
+
+            {/* Gift Speech bubble - only in giftDrop stage */}
+            {stage === 'giftDrop' && showGiftSpeech && (
+              <div className="speech-bubble">
+                <div className="speech-content">
+                  <Sparkles className="speech-icon" />
+                  <p>Matlab itni mehngi gift...</p>
+                  <p>tere jaise bhukkad ke liye!</p>
                 </div>
                 <div className="speech-tail"></div>
               </div>
