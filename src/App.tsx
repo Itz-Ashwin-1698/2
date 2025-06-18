@@ -124,6 +124,8 @@ function App() {
     // Wait for curtain animation to complete before showing gift drop
     setTimeout(() => {
       setStage('giftDrop');
+      // Hide rat during gift drop
+      setShowRat(false);
       // Show gift box dropping
       setTimeout(() => {
         setShowGiftBox(true);
@@ -133,8 +135,9 @@ function App() {
             console.log('Audio play failed');
           });
         }
-        // Show rat's gift speech after gift lands
+        // Show rat again with gift speech after gift lands
         setTimeout(() => {
+          setShowRat(true);
           setShowGiftSpeech(true);
           // Auto-transition to final reveal after 5 seconds
           setTimeout(() => {
@@ -251,12 +254,17 @@ function App() {
         </>
       )}
 
-      {/* Curtains Stage - Lights on with curtains */}
-      {(stage === 'curtains' || stage === 'giftDrop' || stage === 'reveal') && (
+      {/* Curtains Stage - Enhanced theater background */}
+      {stage === 'curtains' && (
         <>
-          {/* Stage background with lights on */}
-          <div className="stage-background lights-on">
+          {/* Enhanced theater stage background */}
+          <div className="theater-stage">
             <div className="stage-floor"></div>
+            <div className="stage-lights">
+              <div className="stage-light stage-light-1"></div>
+              <div className="stage-light stage-light-2"></div>
+              <div className="stage-light stage-light-3"></div>
+            </div>
             
             {/* Spotlight effect - dimmed */}
             <div className="spotlight-container">
@@ -268,66 +276,50 @@ function App() {
               </div>
             </div>
 
-            {/* Curtains */}
+            {/* Enhanced Curtains */}
             {showCurtains && (
               <>
-                <div className={`curtain-left ${curtainOpen ? 'curtain-open-left' : ''}`}></div>
-                <div className={`curtain-right ${curtainOpen ? 'curtain-open-right' : ''}`}></div>
+                <div className={`curtain-left enhanced ${curtainOpen ? 'curtain-open-left' : ''}`}>
+                  <div className="curtain-texture"></div>
+                  <div className="curtain-fold curtain-fold-1"></div>
+                  <div className="curtain-fold curtain-fold-2"></div>
+                  <div className="curtain-fold curtain-fold-3"></div>
+                </div>
+                <div className={`curtain-right enhanced ${curtainOpen ? 'curtain-open-right' : ''}`}>
+                  <div className="curtain-texture"></div>
+                  <div className="curtain-fold curtain-fold-1"></div>
+                  <div className="curtain-fold curtain-fold-2"></div>
+                  <div className="curtain-fold curtain-fold-3"></div>
+                </div>
               </>
             )}
           </div>
 
-          {/* Gift Box - only in giftDrop and reveal stages */}
-          {(stage === 'giftDrop' || stage === 'reveal') && showGiftBox && (
-            <div className="gift-box">
-              <Gift className="gift-icon" />
+          {/* Rat Character - stays visible */}
+          {showRat && (
+            <div className="rat-container">
+              <img 
+                src="/24889b63-2a23-4c1d-bdeb-c6bc764031e5.png" 
+                alt="Cute rat character" 
+                className="rat-image"
+              />
+
+              {/* Second Speech bubble */}
+              {showSecondSpeech && (
+                <div className="speech-bubble">
+                  <div className="speech-content">
+                    <Sparkles className="speech-icon" />
+                    <p>Oyee "Isse Open to Ker ...</p>
+                    <p>Itna Attitude Dikha rhi Tu....!!!!!</p>
+                  </div>
+                  <div className="speech-tail"></div>
+                </div>
+              )}
             </div>
           )}
 
-          {/* Rat Character - stays visible in all stages */}
-          <div className={`rat-container ${stage === 'reveal' ? 'rat-moved-up' : ''}`}>
-            <img 
-              src="/24889b63-2a23-4c1d-bdeb-c6bc764031e5.png" 
-              alt="Cute rat character" 
-              className="rat-image"
-            />
-
-            {/* Magic sparkles around rat in reveal stage */}
-            {stage === 'reveal' && (
-              <div className="magic-sparkles celebration">
-                {[...Array(8)].map((_, i) => (
-                  <div key={i} className={`sparkle sparkle-celebration-${i}`}>✨</div>
-                ))}
-              </div>
-            )}
-
-            {/* Second Speech bubble - only in curtains stage */}
-            {stage === 'curtains' && showSecondSpeech && (
-              <div className="speech-bubble">
-                <div className="speech-content">
-                  <Sparkles className="speech-icon" />
-                  <p>Oyee "Isse Open to Ker ...</p>
-                  <p>Itna Attitude Dikha rhi Tu....!!!!!</p>
-                </div>
-                <div className="speech-tail"></div>
-              </div>
-            )}
-
-            {/* Gift Speech bubble - only in giftDrop stage */}
-            {stage === 'giftDrop' && showGiftSpeech && (
-              <div className="speech-bubble">
-                <div className="speech-content">
-                  <Sparkles className="speech-icon" />
-                  <p>Matlab itni mehngi gift...</p>
-                  <p>tere jaise bhukkad ke liye!</p>
-                </div>
-                <div className="speech-tail"></div>
-              </div>
-            )}
-          </div>
-
-          {/* Ribbon Button - only in curtains stage */}
-          {stage === 'curtains' && showRibbonButton && (
+          {/* Ribbon Button */}
+          {showRibbonButton && (
             <div className="ribbon-button-container">
               <button 
                 onClick={handleContinue}
@@ -335,6 +327,81 @@ function App() {
               >
                 <span>✨ Open Curtains ✨</span>
               </button>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Gift Drop & Reveal Stages - Night Sky Background */}
+      {(stage === 'giftDrop' || stage === 'reveal') && (
+        <>
+          {/* Night Sky Background with Meteors */}
+          <div className="night-sky">
+            {/* Stars */}
+            <div className="stars">
+              {[...Array(50)].map((_, i) => (
+                <div key={i} className={`star star-${i % 5}`}></div>
+              ))}
+            </div>
+            
+            {/* Meteors */}
+            <div className="meteors">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className={`meteor meteor-${i}`}></div>
+              ))}
+            </div>
+
+            {/* Moon */}
+            <div className="moon"></div>
+          </div>
+
+          {/* Gift Box - Enhanced 3D Gift */}
+          {showGiftBox && (
+            <div className="gift-box-3d">
+              <div className="gift-box-main">
+                <div className="gift-box-top"></div>
+                <div className="gift-box-front"></div>
+                <div className="gift-box-right"></div>
+                <div className="gift-ribbon-horizontal"></div>
+                <div className="gift-ribbon-vertical"></div>
+                <div className="gift-bow">
+                  <div className="bow-left"></div>
+                  <div className="bow-right"></div>
+                  <div className="bow-center"></div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Rat Character */}
+          {showRat && (
+            <div className={`rat-container ${stage === 'reveal' ? 'rat-moved-up' : ''}`}>
+              <img 
+                src="/24889b63-2a23-4c1d-bdeb-c6bc764031e5.png" 
+                alt="Cute rat character" 
+                className="rat-image"
+              />
+
+              {/* Magic sparkles around rat in reveal stage */}
+              {stage === 'reveal' && (
+                <div className="magic-sparkles celebration">
+                  {[...Array(8)].map((_, i) => (
+                    <div key={i} className={`sparkle sparkle-celebration-${i}`}>✨</div>
+                  ))}
+                </div>
+              )}
+
+              {/* Gift Speech bubble - only in giftDrop stage */}
+              {stage === 'giftDrop' && showGiftSpeech && (
+                <div className="speech-bubble">
+                  <div className="speech-content">
+                    <Sparkles className="speech-icon" />
+                    <p>Matlab itni mehngi gift...</p>
+                    <p>tere jaise bhukkad ke liye!</p>
+                  </div>
+                  <div className="speech-tail"></div>
+                </div>
+              )}
             </div>
           )}
 
