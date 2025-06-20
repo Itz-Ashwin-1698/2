@@ -120,7 +120,7 @@
   background: #000;
 }
 
-/* Simple Curtains Stage */
+/* Theater Stage - Black background for curtains */
 .theater-stage {
   position: absolute;
   inset: 0;
@@ -242,7 +242,7 @@
   50% { opacity: 1; transform: translateY(-10px) scale(1.5) rotate(180deg); }
 }
 
-/* Simple Red Curtains */
+/* Simple Red Curtains - Plain and clean */
 .curtain-left, .curtain-right {
   position: absolute;
   top: 0;
